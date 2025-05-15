@@ -63,6 +63,11 @@ module Clerk
     private
 
     def compute_org_permissions_from_v2_token(claims)
+      # early return if any required input is missing
+      if claims["fea"].nil? || claims["o"].nil? || claims["o"]["per"].nil? || claims["o"]["fpm"].nil?
+        return []
+      end
+
       features    = claims["fea"].split(",")
       permissions = claims["o"]["per"].split(",")
       mappings    = claims["o"]["fpm"].split(",")
